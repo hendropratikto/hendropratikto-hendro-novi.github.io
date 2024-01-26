@@ -93,6 +93,7 @@ body {
 .story h2,
 .gallery h2,
 .rsvp h2,
+.comments h2,
 .gifts h2 {
   color: var(--pink);
   font-family: 'Sacramento';
@@ -183,6 +184,7 @@ body {
 .story,
 .gallery,
 .rsvp,
+.comments,
 .gifts {
   padding-top: 10rem;
   padding-bottom: 8rem;
@@ -202,6 +204,7 @@ body {
 .story p,
 .gallery p,
 .rsvp p,
+.comments p,
 .gifts p {
   font-size: 1rem;
   font-weight: 300;
@@ -331,6 +334,33 @@ body {
 }
 
 .rsvp button:hover {
+  background-color: white;
+  color: var(--pink);
+  border: 1px solid white;
+}
+.comments {
+  background-color: var(--bg);
+}
+
+.comments h2 {
+  font-size: 4.5rem;
+}
+
+.comments p {
+  color: white;
+}
+
+.comments form label {
+  color: white;
+}
+
+.comments button {
+  background-color: var(--pink);
+  color: white;
+  border: 1px solid var(--pink);
+}
+
+.comments button:hover {
   background-color: white;
   color: var(--pink);
   border: 1px solid white;
