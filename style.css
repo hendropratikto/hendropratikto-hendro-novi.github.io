@@ -490,6 +490,21 @@ footer li {
   line-height: 0;
 }
 
+.song-title {
+  font-size: 1rem;
+  color: #9575cd;
+  opacity: 1;
+  position: fixed; /* Agar posisi tetap */
+  bottom: 2.5rem; /* Sama dengan .audio-icon-wrapper untuk kesejajaran vertikal */
+  right: 6rem; /* Jarak dari ikon audio */
+  transition: opacity 1s ease-in-out;
+}
+
+.song-title.hidden {
+  opacity: 0;
+}
+
+
 @keyframes rotating {
   from {
     transform: rotate(0);
