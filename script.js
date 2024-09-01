@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const styleElement = document.createElement("style");
   styleElement.innerHTML = `
       .glowing-text {
-          color: white;
+          color: #9575cd;
           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
 
@@ -88,17 +88,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const commentRow = document.createElement("div");
       commentRow.className = "row justify-content-center mt-2";
-      commentRow.innerHTML = `<div class="col-12">
-      <strong class="glowing-text glowing-text-animation">${comment.nama}</strong>
-      <div class="badge bg-${kehadiranColor}" style="box-shadow: 0 0 15px rgba(0,0,255,0.3);">
-        ${kehadiranText} 
-      </div> |
-      <small style="color: white; font-size: 12px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">${waktu} ${hari}. ${tanggal} ${bulan} ${jam}</small>
-      <br>
-      <span style="color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">${comment.komentar}</span>
-    </div>`;
-      commentRow.style.borderBottom = "1px solid #ddd"; // Menambahkan garis di bawah komentar
-      commentsContainer.appendChild(commentRow);
+      commentRow.innerHTML = `
+      <div class="col-12">
+        <strong class="glowing-text glowing-text-animation">${comment.nama}</strong>
+        <div class="badge bg-${kehadiranColor}" style="box-shadow: 0 0 15px rgba(0, 0, 255, 0.3);">
+          ${kehadiranText}
+        </div> |
+        <small style="color: #9575cd; font-size: 12px; text-shadow: 2px 2px 4px #d1c1f1;">${waktu} ${hari}. ${tanggal} ${bulan} ${jam}</small>
+        <br>
+        <span style="color: #9575cd; text-shadow: 2px 2px 4px #d1c1f1;">${comment.komentar}</span>
+      </div>`;
+    commentRow.style.borderBottom = "1px solid #ddd"; // Menambahkan garis di bawah komentar
+    commentsContainer.appendChild(commentRow);
     });
   }
 
