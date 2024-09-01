@@ -117,30 +117,45 @@
       </main>
     </section>
 
-    <nav class="navbar navbar-expand-md bg-transparent sticky-top mynavbar">
-      <div class="container">
-        <a class="navbar-brand" href="#">Henov</a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Henov</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-            <div class="navbar-nav ms-auto">
-              <a class="nav-link" href="#home">Home</a>
-              <a class="nav-link" href="#info">Info</a>
-              <a class="nav-link" href="#story">Story</a>
-              <a class="nav-link" href="#gallery">Gallery</a>
-              <a class="nav-link" href="#comments">Comments</a>
-              <a class="nav-link" href="#gifts">Gifts</a>
-            </div>
+    <!-- Navbar untuk PC -->
+  <nav class="navbar navbar-expand-md bg-transparent sticky-top mynavbar d-none d-md-block">
+    <div class="container">
+      <a class="navbar-brand" href="#">Henov</a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Henov</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="#home">Home</a>
+            <a class="nav-link" href="#info">Info</a>
+            <a class="nav-link" href="#story">Story</a>
+            <a class="nav-link" href="#gallery">Gallery</a>
+            <a class="nav-link" href="#comments">Comments</a>
+            <a class="nav-link" href="#gifts">Gifts</a>
           </div>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <!-- Navbar untuk Mobile -->
+  <nav class="navbar navbar-expand bg-light d-block d-md-none mobile-navbar">
+    <div class="container-fluid justify-content-center">
+      <div class="navbar-nav">
+        <a class="nav-link" href="#home">Home</a>
+        <a class="nav-link" href="#info">Info</a>
+        <a class="nav-link" href="#story">Story</a>
+        <a class="nav-link" href="#gallery">Gallery</a>
+        <a class="nav-link" href="#comments">Comments</a>
+        <a class="nav-link" href="#gifts">Gifts</a>
+      </div>
+    </div>
+  </nav>
 
     <section id="home" class="home">
       <div class="container">
@@ -425,6 +440,11 @@
       </div>
     </section>
 
+    <div id="weather-widget" hidden>
+      <h2>Informasi Cuaca</h2>
+      <p>Mengambil data cuaca...</p>
+    </div>
+
     <footer>
       <div class="container">
         <div class="row">
@@ -467,6 +487,36 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
+
+    <script>
+      // Ganti 'YOUR_API_KEY' dengan kunci API yang Anda peroleh dari OpenWeatherMap
+      var apiKey = "6b0fea51e4a5fe076a2d5f990e9ee631";
+      var city = "Jakarta"; // Ganti dengan nama kota tempat pernikahan Anda
+      var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+
+      // Fungsi untuk mengambil data cuaca dari OpenWeatherMap
+      function getWeather() {
+        fetch(apiUrl)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            // Menampilkan informasi cuaca
+            var weatherDescription = data.weather[0].description;
+            var temperature = Math.round(data.main.temp - 273.15); // Konversi dari Kelvin ke Celsius
+            var weatherWidget = document.getElementById("weather-widget");
+            weatherWidget.innerHTML = "<h2>Informasi Cuaca</h2>" + "<p>Cuaca saat ini: " + weatherDescription + "</p>" + "<p>Suhu: " + temperature + "°C</p>";
+          })
+          .catch(function (error) {
+            console.log("Ada masalah dalam mengambil data cuaca:", error);
+            var weatherWidget = document.getElementById("weather-widget");
+            weatherWidget.innerHTML = "<h2>Informasi Cuaca</h2>" + "<p>Gagal mengambil data cuaca.</p>";
+          });
+      }
+
+      // Memanggil fungsi untuk mendapatkan data cuaca saat halaman dimuat
+      getWeather();
+    </script>
 
     <script>
       simplyCountdown(".simply-countdown", {

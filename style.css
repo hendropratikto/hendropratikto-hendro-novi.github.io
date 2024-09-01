@@ -1,17 +1,18 @@
 :root {
-  --pink: #f14e95;
+  /* --pink: #f14e95; */
+  --pink: #9575cd;
   --bg: #0a0a0a;
   --shadow: 0 2px 2px rgb(0 0 0 / 0.5);
 }
 
 body {
   font-size: 1.2rem;
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   min-height: 4000px;
 }
 
 .hero::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -36,7 +37,7 @@ body {
 }
 
 .hero h1 {
-  font-family: 'Sacramento', cursive;
+  font-family: "Sacramento", cursive;
   font-size: 6rem;
 }
 
@@ -70,7 +71,7 @@ body {
 
 .mynavbar .navbar-brand,
 .mynavbar .offcanvas-title {
-  font-family: 'Sacramento', cursive;
+  font-family: "Sacramento", cursive;
   font-size: 3.2rem;
   font-weight: bold;
 }
@@ -78,6 +79,88 @@ body {
 .mynavbar .nav-link {
   text-transform: uppercase;
 }
+
+/* Mobile Navbar inspired by BTS */
+.mobile-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background: linear-gradient(90deg, #FF87CA, #B19FFF, #87CEFA); /* Gradien multi-warna pastel */
+  border-top: 3px solid #B19FFF; /* Border ungu di atas navbar */
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2); /* Shadow lebih tebal untuk efek kedalaman */
+  font-family: 'Arial', sans-serif; /* Font yang bersih dan modern */
+  animation: slideUp 0.5s ease-in-out; /* Animasi saat navbar muncul */
+  transition: background 3s ease; /* Transisi untuk gradien berubah warna */
+}
+
+.mobile-navbar:hover {
+  background: linear-gradient(90deg, #87CEFA, #B19FFF, #FF87CA); /* Gradien berubah warna saat hover */
+}
+
+.mobile-navbar .navbar-nav {
+  flex-direction: row; /* Menyusun item navbar secara horizontal */
+  justify-content: space-around; /* Mengatur jarak antar item navbar */
+  align-items: center; /* Menyelaraskan item secara vertikal */
+}
+
+.mobile-navbar .nav-link {
+  flex-grow: 1; /* Membuat link menempati ruang yang sama */
+  text-align: center; /* Menyelaraskan teks di tengah */
+  padding: 15px 0; /* Menambah padding untuk kenyamanan pengguna */
+  color: white; /* Warna teks putih untuk kontras dengan background */
+  font-weight: bold; /* Membuat teks lebih tebal */
+  text-transform: uppercase; /* Mengubah teks menjadi huruf besar */
+  letter-spacing: 1.2px; /* Menambah spasi antar huruf */
+  transition: all 0.3s ease; /* Transisi halus saat hover */
+  position: relative; /* Untuk positioning elemen pseudo */
+}
+
+.mobile-navbar .nav-link:before {
+  content: "\2605"; /* Menggunakan ikon bintang (★) */
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px; /* Ukuran ikon bintang */
+  color: #FFDEFA; /* Warna bintang pink muda */
+  opacity: 0;
+  transition: all 0.3s ease; /* Transisi untuk elemen pseudo */
+}
+
+.mobile-navbar .nav-link:hover:before {
+  opacity: 1; /* Tampilkan elemen pseudo saat hover */
+  top: -20px; /* Animasi bergerak ke atas */
+}
+
+.mobile-navbar .nav-link:hover {
+  color: #FFDEFA; /* Warna hover pink muda */
+  background-color: rgba(255, 255, 255, 0.15); /* Efek hover latar belakang semi transparan */
+  border-radius: 10px; /* Rounding lebih besar pada efek hover */
+  transform: scale(1.1); /* Efek membesar saat hover */
+}
+
+.mobile-navbar .nav-link:active {
+  transform: scale(0.95); /* Efek mengklik (sedikit mengecil) */
+  transition: transform 0.1s ease; /* Transisi cepat untuk klik */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-navbar {
+    display: none; /* Menyembunyikan navbar mobile di ukuran layar lebih besar dari 768px */
+  }
+}
+
 
 .home {
   background-image: url(img/bg.png);
@@ -96,7 +179,7 @@ body {
 .comments h2,
 .gifts h2 {
   color: var(--pink);
-  font-family: 'Sacramento';
+  font-family: "Sacramento";
   font-size: 5rem;
   font-weight: bold;
 }
@@ -117,7 +200,7 @@ body {
 }
 
 .home .couple h3 {
-  font-family: 'Sacramento';
+  font-family: "Sacramento";
   font-size: 2.4rem;
   color: var(--pink);
 }
@@ -218,7 +301,7 @@ body {
 }
 
 .timeline::before {
-  content: '';
+  content: "";
   top: 0;
   bottom: 0;
   position: absolute;
@@ -234,7 +317,7 @@ body {
 
 .timeline li::before,
 .timeline li::after {
-  content: '';
+  content: "";
   display: table;
 }
 
@@ -266,7 +349,7 @@ body {
 }
 
 .timeline li .timeline-panel::before {
-  content: '';
+  content: "";
   display: inline-block;
   position: absolute;
   border-top: 15px solid transparent;
@@ -278,7 +361,7 @@ body {
 }
 
 .timeline li .timeline-panel::after {
-  content: '';
+  content: "";
   position: absolute;
   display: inline-block;
   border-top: 14px solid transparent;
@@ -521,5 +604,16 @@ footer li {
 
   .timeline li .timeline-panel::after {
     top: 31px;
+  }
+
+  .row-cols-sm-2 > .col {
+    flex: 0 0 50%; /* Each column takes up 50% of the row */
+    max-width: 50%; /* Each column's maximum width is 50% */
+  }
+
+  .img-fluid {
+    border-radius: 10px; /* Add border radius to images */
+    width: 100%; /* Set width to 100% */
+    height: auto; /* Set height to auto to maintain aspect ratio */
   }
 }

@@ -37,25 +37,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const commentsContainer = document.getElementById("comments-container");
 
   // Mengambil komentar dari Firebase, diurutkan berdasarkan timestamp secara descending
-commentsRef.orderByChild('waktu').once("value", (snapshot) => {
-  // Memperoleh data komentar
-  let commentsData = snapshot.val();
+  commentsRef.orderByChild("waktu").once("value", (snapshot) => {
+    // Memperoleh data komentar
+    let commentsData = snapshot.val();
 
-  // Mengonversi objek data komentar menjadi array
-  let commentsArray = Object.values(commentsData);
+    // Mengonversi objek data komentar menjadi array
+    let commentsArray = Object.values(commentsData);
 
-  // Membalik array agar komentar yang terbaru berada di atas
-  commentsArray.reverse();
+    // Membalik array agar komentar yang terbaru berada di atas
+    commentsArray.reverse();
 
-  // Menyimpan snapshot komentar
-  commentsSnapshot = commentsArray;
+    // Menyimpan snapshot komentar
+    commentsSnapshot = commentsArray;
 
-  // Menampilkan komentar pada halaman pertama
-  displayComments(currentPage, commentsArray);
+    // Menampilkan komentar pada halaman pertama
+    displayComments(currentPage, commentsArray);
 
-  // Membuat tombol pagination setelah mendapatkan data komentar
-  createPaginationButtons(Math.ceil(commentsArray.length / commentsPerPage));
-});
+    // Membuat tombol pagination setelah mendapatkan data komentar
+    createPaginationButtons(Math.ceil(commentsArray.length / commentsPerPage));
+  });
 
   const commentsPerPage = 5; // Jumlah komentar per halaman
   let currentPage = 1;
@@ -111,6 +111,9 @@ commentsRef.orderByChild('waktu').once("value", (snapshot) => {
       const button = document.createElement("button");
       button.innerText = i;
       button.style.marginTop = "10px"; // Menambahkan margin atas
+      button.style.marginRight = "10px"; // Menambahkan margin 
+      button.style.lineHeight = "18px"; 
+      button.style.width      = "38px";
       button.addEventListener("click", () => {
         currentPage = i;
         displayComments(currentPage, commentsSnapshot); // Gunakan snapshot yang diambil dari Firebase
@@ -129,7 +132,7 @@ commentsRef.orderByChild('waktu').once("value", (snapshot) => {
           const commentsArray = Object.values(commentsData);
           const reversedComments = commentsArray.reverse();
           displayComments(currentPage, reversedComments);
-      });
+        });
       });
 
       // Tambahkan kelas 'active' ke tombol saat tombol dibuat
@@ -181,45 +184,112 @@ commentsRef.orderByChild('waktu').once("value", (snapshot) => {
   const form = document.getElementById("comment-form");
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-
+  
     // Dapatkan data dari formulir
-    const data = new FormData(form);
-
-    // Simpan data ke Firebase Realtime Database
-    commentsRef
-      .push({
-        nama: data.get("nama"),
-        komentar: data.get("komentar"),
-        kehadiran: data.get("kehadiran"),
-        waktu: firebase.database.ServerValue.TIMESTAMP,
-      })
-      .then(() => {
-        console.log("Komentar berhasil Terkirim!");
-        Swal.fire({
-          icon: "success",
-          title: "Sukses",
-          text: "Komentar berhasil Terkirim!",
-          showCloseButton: true,
-          showProgressBar: true,
+    const formData = new FormData(form);
+  
+    // Fetch IP address first
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        const ip = data.ip;
+  
+        // Cek apakah IP sudah ada di Firebase
+        commentsRef.orderByChild('ip').equalTo(ip).once('value', snapshot => {
+          if (snapshot.exists()) {
+            // IP sudah ada, tampilkan pesan kesalahan
+            Swal.fire({
+              icon: "warning",
+              title: "Maaf",
+              text: "Anda sudah pernah mengirim ungkapan :).",
+              showCloseButton: true,
+              showProgressBar: true,
+            });
+          } else {
+            // IP belum ada, simpan data ke Firebase Realtime Database
+            commentsRef
+              .push({
+                nama: formData.get("nama"),
+                komentar: formData.get("komentar"),
+                kehadiran: formData.get("kehadiran"),
+                waktu: firebase.database.ServerValue.TIMESTAMP,
+                ip: ip
+              })
+              .then((snapshot) => {
+                console.log("Komentar berhasil Terkirim!");
+                Swal.fire({
+                  icon: "success",
+                  title: "Sukses",
+                  text: "Komentar berhasil Terkirim!",
+                  showCloseButton: true,
+                  showProgressBar: true,
+                });
+  
+                // Mengambil komentar baru dari Firebase untuk memastikan sinkronisasi
+                commentsRef.once('value', (snapshot) => {
+                  const comments = [];
+                  snapshot.forEach(childSnapshot => {
+                    const childData = childSnapshot.val();
+                    comments.push({
+                      nama: childData.nama,
+                      komentar: childData.komentar,
+                      kehadiran: childData.kehadiran,
+                      waktu: childData.waktu,
+                    });
+                  });
+  
+                  // Tampilkan kembali komentar dengan data terbaru
+                  displayComments(1, comments);
+                });
+  
+                // Mengosongkan isi formulir
+                form.reset();
+              })
+              .catch((error) => {
+                console.error("Error saving comment: ", error);
+                Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: "Terjadi kesalahan saat menyimpan komentar.",
+                  showCloseButton: true,
+                  showProgressBar: true,
+                });
+              });
+          }
         });
-
-        // Mengosongkan isi formulir
-        form.reset();
-
-        // Memuat ulang halaman setelah 2 detik
-        setTimeout(() => {
-          location.reload();
-        }, 2000); // Waktu delay sebelum refresh (dalam milidetik), disini kita menggunakan 2 detik
+  
       })
-      .catch((error) => {
-        console.error("Error saving comment: ", error);
+      .catch(error => {
+        console.error("Error fetching IP address: ", error);
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Terjadi kesalahan saat menyimpan komentar.",
+          text: "Terjadi kesalahan saat mengambil alamat IP.",
           showCloseButton: true,
           showProgressBar: true,
         });
       });
   });
+  
+  
+  // Fungsi untuk menambahkan komentar baru ke halaman
+  function addCommentToPage(commentData) {
+    // Dapatkan elemen HTML di mana komentar akan ditambahkan
+    const commentsContainer = document.getElementById('comments-container');
+  
+    // Buat elemen baru untuk komentar
+    const commentElement = document.createElement('div');
+    commentElement.classList.add('comment');
+  
+    // Tambahkan konten komentar ke elemen
+    commentElement.innerHTML = `
+      <h4>${commentData.nama}</h4>
+      <p>${commentData.komentar}</p>
+      <small>Hadir: ${commentData.kehadiran}</small>
+      <small>Waktu: ${commentData.waktu}</small>
+    `;
+  
+    // Tambahkan elemen komentar ke container
+    commentsContainer.appendChild(commentElement);
+  }  
 });
