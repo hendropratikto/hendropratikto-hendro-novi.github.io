@@ -18,27 +18,27 @@
 } */
 
 .simply-countdown > .simply-section {
-  width: 80px; /* Lebar kotak */
-  height: 100px; /* Tinggi kotak */
-  padding: 20px; /* Padding di dalam kotak */
+  width: 80px;
+  height: 100px;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   float: left;
   margin: 10px;
-  background: linear-gradient(135deg, #6f2c91, #a77bca); /* Gradasi warna ungu */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.19); /* Bayangan yang lebih dalam */
-  border-radius: 12px; /* Sudut yang sedikit melengkung */
-  font-family: 'Noto Sans', sans-serif; /* Font yang modern */
-  color: white; /* Warna teks */
-  font-size: 24px; /* Ukuran font */
-  text-align: center; /* Pusatkan teks */
-  transition: transform 0.3s, box-shadow 0.3s; /* Efek transisi saat hover */
+  background: linear-gradient(135deg, #6f2c91, #a77bca);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.19);
+  border-radius: 12px;
+  font-family: 'Noto Sans', sans-serif;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .simply-countdown > .simply-section:hover {
-  transform: scale(1.05); /* Membesar sedikit saat hover */
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Bayangan lebih dalam saat hover */
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
 
 .simply-countdown > .simply-section .simply-amount,
@@ -48,107 +48,106 @@
 }
 
 .simply-countdown > .simply-section .simply-amount {
-  font-size: 2rem; /* Ukuran font lebih besar untuk jumlah */
-  font-weight: bold; /* Tebalkan teks jumlah */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Bayangan teks untuk efek kedalaman */
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .simply-countdown > .simply-section .simply-word {
-  font-size: 1.2rem; /* Ukuran font untuk kata */
-  margin-top: 5px; /* Jarak antara jumlah dan kata */
-  letter-spacing: 1px; /* Spasi antar huruf untuk tampilan lebih modern */
+  font-size: 1.2rem;
+  margin-top: 5px;
+  letter-spacing: 1px;
 }
 
-/* Tambahan untuk ikon BTS */
 .simply-countdown > .simply-section:before {
-  content: url('https://upload.wikimedia.org/wikipedia/en/7/7c/BTS_logo.svg'); /* Ganti dengan URL gambar ikon BTS */
+  content: url('https://upload.wikimedia.org/wikipedia/en/7/7c/BTS_logo.svg');
   display: block;
-  margin-bottom: 5px; /* Jarak antara ikon dan angka */
-  width: 30px; /* Lebar ikon */
-  height: auto; /* Tinggi otomatis */
+  margin-bottom: 5px;
+  width: 30px;
+  height: auto;
 }
 
 /* Media Query untuk Responsif */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .simply-countdown > .simply-section {
-    width: 70px; /* Lebar kotak untuk tablet */
-    height: 90px; /* Tinggi kotak untuk tablet */
-    padding: 15px; /* Padding lebih kecil */
-    font-size: 22px; /* Ukuran font lebih kecil */
+    width: 70px; 
+    height: 90px; 
+    padding: 15px; 
+    font-size: 22px;
   }
 
   .simply-countdown > .simply-section .simply-amount {
-    font-size: 1.8rem; /* Ukuran font lebih kecil untuk jumlah */
+    font-size: 1.8rem; 
   }
 
   .simply-countdown > .simply-section .simply-word {
-    font-size: 1.1rem; /* Ukuran font lebih kecil untuk kata */
+    font-size: 1.1rem;
   }
 
   .simply-countdown > .simply-section:before {
-    width: 28px; /* Lebar ikon lebih kecil di tablet */
+    width: 28px; 
   }
 }
 
 @media (max-width: 600px) {
   .simply-countdown > .simply-section {
-    width: 60px; /* Lebar kotak untuk ponsel kecil */
-    height: 80px; /* Tinggi kotak untuk ponsel kecil */
-    padding: 10px; /* Padding lebih kecil */
-    font-size: 20px; /* Ukuran font lebih kecil */
+    width: 60px;
+    height: 80px;
+    padding: 10px; 
+    font-size: 20px;
   }
 
   .simply-countdown > .simply-section .simply-amount {
-    font-size: 1.5rem; /* Ukuran font lebih kecil untuk jumlah */
+    font-size: 1.5rem; 
   }
 
   .simply-countdown > .simply-section .simply-word {
-    font-size: 1rem; /* Ukuran font lebih kecil untuk kata */
+    font-size: 1rem;
   }
 
   .simply-countdown > .simply-section:before {
-    width: 25px; /* Lebar ikon lebih kecil di ponsel kecil */
+    width: 25px; 
   }
 }
 
 @media (max-width: 400px) {
   .simply-countdown > .simply-section {
-    width: 50px; /* Lebar kotak untuk ponsel sangat kecil */
-    height: 70px; /* Tinggi kotak untuk ponsel sangat kecil */
-    padding: 8px; /* Padding lebih kecil */
-    font-size: 18px; /* Ukuran font lebih kecil */
+    width: 50px;
+    height: 70px; 
+    padding: 8px; 
+    font-size: 18px;
   }
 
   .simply-countdown > .simply-section .simply-amount {
-    font-size: 1.2rem; /* Ukuran font lebih kecil untuk jumlah */
+    font-size: 1.2rem; 
   }
 
   .simply-countdown > .simply-section .simply-word {
-    font-size: 0.9rem; /* Ukuran font lebih kecil untuk kata */
+    font-size: 0.9rem;
   }
 
   .simply-countdown > .simply-section:before {
-    width: 20px; /* Lebar ikon lebih kecil di ponsel sangat kecil */
+    width: 20px; 
   }
 }
 
 @media (max-width: 360px) {
   .simply-countdown > .simply-section {
-    width: 50px; /* Lebar kotak untuk layar 360px */
-    height: 70px; /* Tinggi kotak untuk layar 360px */
-    padding: 8px; /* Padding lebih kecil */
-    font-size: 18px; /* Ukuran font lebih kecil */
+    width: 50px; 
+    height: 70px; 
+    padding: 8px;
+    font-size: 18px; 
   }
 
   .simply-countdown > .simply-section .simply-amount {
-    font-size: 1.2rem; /* Ukuran font lebih kecil untuk jumlah */
+    font-size: 1.2rem;
   }
 
   .simply-countdown > .simply-section .simply-word {
-    font-size: 0.9rem; /* Ukuran font lebih kecil untuk kata */
+    font-size: 0.9rem;
   }
 
   .simply-countdown > .simply-section:before {
-    width: 20px; /* Lebar ikon lebih kecil di layar 360px */
+    width: 20px;
   }
-}
+} */
