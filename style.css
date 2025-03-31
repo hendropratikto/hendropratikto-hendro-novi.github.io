@@ -590,6 +590,11 @@ footer li {
     width: 140px;
     height: 140px;
   }
+
+  .audio-icon-wrapper {
+    bottom: 7rem; /* Tambahkan lebih banyak jarak dari bawah */
+    right: 1.5rem; /* Sesuaikan posisi kanan jika diperlukan */
+  }
 }
 
 /* mobile phone */

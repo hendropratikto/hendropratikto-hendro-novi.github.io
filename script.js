@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.head.appendChild(styleElement);
 
   const commentsRef = firebase.database().ref("comments");
+  
   const commentsContainer = document.getElementById("comments-container");
 
   // Mengambil komentar dari Firebase, diurutkan berdasarkan timestamp secara descending
@@ -185,80 +186,35 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("comment-form");
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-  
+
     // Dapatkan data dari formulir
     const formData = new FormData(form);
-  
+
     // Fetch IP address first
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
+    fetch('https://api.ipify.org?format=json').then(response => response.json()).then(data => {
         const ip = data.ip;
-  
+
         // Cek apakah IP sudah ada di Firebase
-        commentsRef.orderByChild('ip').equalTo(ip).once('value', snapshot => {
+        commentsRef.orderByChild('ip').equalTo(ip).once('value').then(snapshot => {
           if (snapshot.exists()) {
             // IP sudah ada, tampilkan pesan kesalahan
             Swal.fire({
               icon: "warning",
               title: "Maaf",
               text: "Anda sudah pernah mengirim ungkapan :).",
+              timer: 5000,
               showCloseButton: true,
-              showProgressBar: true,
+              showConfirmButton: false,
             });
           } else {
-            // IP belum ada, simpan data ke Firebase Realtime Database
-            commentsRef
-              .push({
-                nama: formData.get("nama"),
-                komentar: formData.get("komentar"),
-                kehadiran: formData.get("kehadiran"),
-                waktu: firebase.database.ServerValue.TIMESTAMP,
-                ip: ip
-              })
-              .then((snapshot) => {
-                console.log("Komentar berhasil Terkirim!");
-                Swal.fire({
-                  icon: "success",
-                  title: "Sukses",
-                  text: "Komentar berhasil Terkirim!",
-                  showCloseButton: true,
-                  showProgressBar: true,
-                });
-  
-                // Mengambil komentar baru dari Firebase untuk memastikan sinkronisasi
-                commentsRef.once('value', (snapshot) => {
-                  const comments = [];
-                  snapshot.forEach(childSnapshot => {
-                    const childData = childSnapshot.val();
-                    comments.push({
-                      nama: childData.nama,
-                      komentar: childData.komentar,
-                      kehadiran: childData.kehadiran,
-                      waktu: childData.waktu,
-                    });
-                  });
-  
-                  // Tampilkan kembali komentar dengan data terbaru
-                  displayComments(1, comments);
-                });
-  
-                // Mengosongkan isi formulir
-                form.reset();
-              })
-              .catch((error) => {
-                console.error("Error saving comment: ", error);
-                Swal.fire({
-                  icon: "error",
-                  title: "Error",
-                  text: "Terjadi kesalahan saat menyimpan komentar.",
-                  showCloseButton: true,
-                  showProgressBar: true,
-                });
-              });
+            // Jika tidak ada data IP, lanjutkan penyimpanan
+            simpanKomentar(formData, ip);
           }
+        }).catch(error => {
+          console.error("Error checking IP: ", error);
+          // Jika gagal cek IP, tetap izinkan penyimpanan
+          simpanKomentar(formData, ip);
         });
-  
       })
       .catch(error => {
         console.error("Error fetching IP address: ", error);
@@ -266,11 +222,153 @@ document.addEventListener("DOMContentLoaded", function () {
           icon: "error",
           title: "Error",
           text: "Terjadi kesalahan saat mengambil alamat IP.",
+          timer: 5000,
           showCloseButton: true,
-          showProgressBar: true,
+          showConfirmButton: false,
         });
       });
   });
+
+  // Fungsi untuk menyimpan komentar
+  function simpanKomentar(formData, ip) {
+    commentsRef.push({
+      nama: formData.get("nama"),
+      komentar: formData.get("komentar"),
+      kehadiran: formData.get("kehadiran"),
+      waktu: firebase.database.ServerValue.TIMESTAMP,
+      ip: ip
+    })
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Komentar berhasil Terkirim!",
+        timer: 5000,
+        showCloseButton: true,
+        showConfirmButton: false,
+      });
+
+      // Refresh komentar dari Firebase
+      commentsRef.once('value').then(snapshot => {
+        const comments = [];
+        snapshot.forEach(childSnapshot => {
+          const childData = childSnapshot.val();
+          comments.push({
+            nama: childData.nama,
+            komentar: childData.komentar,
+            kehadiran: childData.kehadiran,
+            waktu: childData.waktu,
+          });
+        });
+
+        // Tampilkan kembali komentar dengan data terbaru
+        displayComments(1, comments);
+      });
+
+      // Mengosongkan isi formulir
+      form.reset();
+      countComments();
+    })
+    .catch(error => {
+      console.error("Error saving comment: ", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Terjadi kesalahan saat menyimpan komentar.",
+        showCloseButton: true
+      });
+    });
+  }
+
+  // const form = document.getElementById("comment-form");
+  // form.addEventListener("submit", function (e) {
+  //   e.preventDefault();
+  
+  //   // Dapatkan data dari formulir
+  //   const formData = new FormData(form);
+  
+  //   // Fetch IP address first
+  //   fetch('https://api.ipify.org?format=json')
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       const ip = data.ip;
+  
+  //       // Cek apakah IP sudah ada di Firebase
+  //       commentsRef.orderByChild('ip').equalTo(ip).once('value', snapshot => {
+  //         if (snapshot.exists()) {
+  //           // IP sudah ada, tampilkan pesan kesalahan
+  //           Swal.fire({
+  //             icon: "warning",
+  //             title: "Maaf",
+  //             text: "Anda sudah pernah mengirim ungkapan :).",
+  //             showCloseButton: true,
+  //             showProgressBar: true,
+  //           });
+  //         } else {
+  //           // IP belum ada, simpan data ke Firebase Realtime Database
+  //           commentsRef
+  //             .push({
+  //               nama: formData.get("nama"),
+  //               komentar: formData.get("komentar"),
+  //               kehadiran: formData.get("kehadiran"),
+  //               waktu: firebase.database.ServerValue.TIMESTAMP,
+  //               ip: ip
+  //             })
+  //             .then((snapshot) => {
+  //               console.log("Komentar berhasil Terkirim!");
+  //               Swal.fire({
+  //                 icon: "success",
+  //                 title: "Sukses",
+  //                 text: "Komentar berhasil Terkirim!",
+  //                 showCloseButton: true,
+  //                 showProgressBar: true,
+  //               });
+  
+  //               // Mengambil komentar baru dari Firebase untuk memastikan sinkronisasi
+  //               commentsRef.once('value', (snapshot) => {
+  //                 const comments = [];
+  //                 snapshot.forEach(childSnapshot => {
+  //                   const childData = childSnapshot.val();
+  //                   comments.push({
+  //                     nama: childData.nama,
+  //                     komentar: childData.komentar,
+  //                     kehadiran: childData.kehadiran,
+  //                     waktu: childData.waktu,
+  //                   });
+  //                 });
+  
+  //                 // Tampilkan kembali komentar dengan data terbaru
+  //                 displayComments(1, comments);
+  //               });
+  
+  //               // Mengosongkan isi formulir
+  //               form.reset();
+  //             })
+  //             .catch((error) => {
+  //               console.error("Error saving comment: ", error);
+  //               Swal.fire({
+  //                 icon: "error",
+  //                 title: "Error",
+  //                 text: "Terjadi kesalahan saat menyimpan komentar.",
+  //                 showCloseButton: true,
+  //                 showProgressBar: true,
+  //               });
+  //             });
+  //         }
+  //       });
+  
+  //     })
+  //     .catch(error => {
+  //       console.error("Error fetching IP address: ", error);
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: "Terjadi kesalahan saat mengambil alamat IP.",
+  //         showCloseButton: true,
+  //         showProgressBar: true,
+  //       });
+  //     });
+  // });
   
   
   // Fungsi untuk menambahkan komentar baru ke halaman
