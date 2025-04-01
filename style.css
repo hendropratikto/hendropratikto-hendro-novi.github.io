@@ -159,6 +159,12 @@ body {
   .mobile-navbar {
     display: none; /* Menyembunyikan navbar mobile di ukuran layar lebih besar dari 768px */
   }
+  .home .heart {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 
@@ -522,6 +528,12 @@ footer li {
   }
 }
 
+
+.home .and {
+  display: none;
+  font-size: 2rem;
+}
+
 /* laptop */
 @media (max-width: 992px) {
   html {
@@ -534,6 +546,17 @@ footer li {
 
   .home .heart {
     display: none;
+  }
+
+  .home .and {
+    display: block; /* Tampilkan simbol & */
+    text-align: center;
+    padding-bottom: 10px;
+    font-size: 25pt;
+  }
+
+  .home .and::before {
+    content: "&"; /* Menampilkan simbol & */
   }
 
   .timeline::before {
