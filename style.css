@@ -559,6 +559,10 @@ footer li {
     content: "&"; /* Menampilkan simbol & */
   }
 
+  .and {
+    color: #848181; /* Warna ikon sedikit lebih terang */
+  }
+
   .timeline::before {
     left: 60px;
   }
@@ -617,6 +621,10 @@ footer li {
   .audio-icon-wrapper {
     bottom: 7rem; /* Tambahkan lebih banyak jarak dari bawah */
     right: 1.5rem; /* Sesuaikan posisi kanan jika diperlukan */
+  }
+
+  .song-title {
+    bottom: 7rem;
   }
 }
 
